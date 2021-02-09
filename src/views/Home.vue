@@ -48,9 +48,15 @@ export default {
         image_url:
           "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2010/8/12/0/FN-Thanksgiving-2010_Brussels-Sprouts_s4x3.jpg.rend.hgtvcom.826.620.suffix/1384540892898.jpeg",
       };
-      axios.post("/api/recipes", params).then((response) => {
-        console.log(response.data);
-      });
+      axios
+        .post("/api/recipes", params)
+        .then((response) => {
+          console.log(response.data);
+          this.recipes.push(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data.errors);
+        });
     },
   },
 };
