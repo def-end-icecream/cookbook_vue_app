@@ -2,7 +2,7 @@
   <div class="home">
     <h1>New Recipe</h1>
     <div>
-      <p v-for="error in errors">{{ error }}</p>
+      <p v-for="error in createErrors">{{ error }}</p>
       Title: <input type="text" v-model="newRecipeTitle" /> <br />
       Ingredients: <input type="text" v-model="newRecipeIngredients" /><br />
       Directions: <input type="text" v-model="newRecipeDirections" /><br />
@@ -25,10 +25,17 @@
       <form method="dialog">
         <h2>Recipe Info</h2>
         <img :src="currentRecipe.image_url" alt="" />
-        <p>Title: {{ currentRecipe.title }}</p>
-        <p>Ingredients: {{ currentRecipe.ingredients }}</p>
-        <p>Directions: {{ currentRecipe.directions }}</p>
-        <p>Prep Time: {{ currentRecipe.prep_time }}</p>
+        <p>Title: <input type="text" v-model="currentRecipe.title" /></p>
+        <p>
+          Ingredients: <input type="text" v-model="currentRecipe.ingredients" />
+        </p>
+        <p>
+          Directions: <input type="text" v-model="currentRecipe.directions" />
+        </p>
+        <p>
+          Prep Time: <input type="text" v-model="currentRecipe.prep_time" />
+        </p>
+        <button v-on:click="updateRecipe()">Update</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -54,7 +61,7 @@ export default {
       newRecipePrepTime: "",
       newRecipeImageUrl: "",
       currentRecipe: {},
-      errors: [],
+      createErrors: [],
     };
   },
   created: function() {
@@ -83,13 +90,30 @@ export default {
         })
         .catch((error) => {
           console.log(error.response.data.errors);
-          this.errors = error.response.data.errors;
+          this.createErrors = error.response.data.errors;
         });
     },
-    showRecipe: function(recipe) {
-      console.log(recipe);
-      this.currentRecipe = recipe;
+    showRecipe: function(inputRecipe) {
+      console.log(inputRecipe);
+      this.currentRecipe = inputRecipe;
       document.querySelector("dialog").showModal();
+    },
+    updateRecipe: function() {
+      var params = {
+        title: this.currentRecipe.title,
+        ingredients: this.currentRecipe.ingredients,
+        directions: this.currentRecipe.directions,
+        prep_time: this.currentRecipe.prep_time,
+        image_url: this.currentRecipe.image_url,
+      };
+      axios
+        .patch(`/api/recipes/${this.currentRecipe.id}`, params)
+        .then((response) => {
+          console.log("Success", response.data);
+        })
+        .catch((error) => {
+          console.log("Error", error.response.data);
+        });
     },
   },
 };
