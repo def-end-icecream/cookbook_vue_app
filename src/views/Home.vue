@@ -17,7 +17,20 @@
       <p>Ingredients: {{ recipe.ingredients }}</p>
       <p>Directions: {{ recipe.directions }}</p>
       <p>Prep Time: {{ recipe.prep_time }}</p>
+      <button v-on:click="showRecipe(recipe)">More Info</button>
     </div>
+
+    <dialog>
+      <form method="dialog">
+        <h2>Recipe Info</h2>
+        <img src="" alt="" />
+        <p>Title: ..</p>
+        <p>Ingredients: ..</p>
+        <p>Directions: ..</p>
+        <p>Prep Time: ..</p>
+        <button>Close</button>
+      </form>
+    </dialog>
   </div>
 </template>
 
@@ -69,6 +82,10 @@ export default {
         .catch((error) => {
           console.log(error.response.data.errors);
         });
+    },
+    showRecipe: function(recipe) {
+      console.log(recipe);
+      document.querySelector("dialog").showModal();
     },
   },
 };
