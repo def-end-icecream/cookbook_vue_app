@@ -2,6 +2,7 @@
   <div class="home">
     <h1>New Recipe</h1>
     <div>
+      <p v-for="error in errors">{{ error }}</p>
       Title: <input type="text" v-model="newRecipeTitle" /> <br />
       Ingredients: <input type="text" v-model="newRecipeIngredients" /><br />
       Directions: <input type="text" v-model="newRecipeDirections" /><br />
@@ -23,11 +24,11 @@
     <dialog>
       <form method="dialog">
         <h2>Recipe Info</h2>
-        <img src="" alt="" />
-        <p>Title: ..</p>
-        <p>Ingredients: ..</p>
-        <p>Directions: ..</p>
-        <p>Prep Time: ..</p>
+        <img :src="currentRecipe.image_url" alt="" />
+        <p>Title: {{ currentRecipe.title }}</p>
+        <p>Ingredients: {{ currentRecipe.ingredients }}</p>
+        <p>Directions: {{ currentRecipe.directions }}</p>
+        <p>Prep Time: {{ currentRecipe.prep_time }}</p>
         <button>Close</button>
       </form>
     </dialog>
@@ -46,13 +47,14 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      message: "Hello World!",
       recipes: [],
       newRecipeTitle: "",
       newRecipeIngredients: "",
       newRecipeDirections: "",
       newRecipePrepTime: "",
       newRecipeImageUrl: "",
+      currentRecipe: {},
+      errors: [],
     };
   },
   created: function() {
@@ -81,10 +83,12 @@ export default {
         })
         .catch((error) => {
           console.log(error.response.data.errors);
+          this.errors = error.response.data.errors;
         });
     },
     showRecipe: function(recipe) {
       console.log(recipe);
+      this.currentRecipe = recipe;
       document.querySelector("dialog").showModal();
     },
   },
