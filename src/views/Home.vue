@@ -12,6 +12,7 @@
     </div>
 
     <h1>All Recipes</h1>
+    Current Recipe: {{ currentRecipe }}
     <div v-for="recipe in recipes" v-bind:key="recipe.id">
       <h2>Title: {{ recipe.title }}</h2>
       <img v-bind:src="recipe.image_url" alt="" />
@@ -35,7 +36,8 @@
         <p>
           Prep Time: <input type="text" v-model="currentRecipe.prep_time" />
         </p>
-        <button v-on:click="updateRecipe()">Update</button>
+        <button v-on:click="updateRecipe({ currentRecipe })">Update</button>
+        <button v-on:click="destroyRecipe(currentRecipe)">Destroy</button>
         <button>Close</button>
       </form>
     </dialog>
@@ -98,22 +100,31 @@ export default {
       this.currentRecipe = inputRecipe;
       document.querySelector("dialog").showModal();
     },
-    updateRecipe: function() {
+    updateRecipe: function(inputRecipe) {
       var params = {
-        title: this.currentRecipe.title,
-        ingredients: this.currentRecipe.ingredients,
-        directions: this.currentRecipe.directions,
-        prep_time: this.currentRecipe.prep_time,
-        image_url: this.currentRecipe.image_url,
+        title: inputRecipe.title,
+        ingredients: inputRecipe.ingredients,
+        directions: inputRecipe.directions,
+        prep_time: inputRecipe.prep_time,
+        image_url: inputRecipe.image_url,
       };
       axios
-        .patch(`/api/recipes/${this.currentRecipe.id}`, params)
+        .patch(`/api/recipes/${inputRecipe.id}`, params)
         .then((response) => {
           console.log("Success", response.data);
         })
         .catch((error) => {
           console.log("Error", error.response.data);
         });
+    },
+    destroyRecipe: function(inputRecipe) {
+      axios.delete(`/api/recipes/${inputRecipe.id}`).then((response) => {
+        console.log("Success", response.data);
+        // find index of inputRecipe object in the recipes name
+        var index = this.recipes.indexOf(inputRecipe);
+        // remove that index from the recipes array
+        this.recipes.splice(index, 1);
+      });
     },
   },
 };
