@@ -5,7 +5,10 @@
     <p>Ingredients: {{ recipe.ingredients }}</p>
     <p>Directions: {{ recipe.directions }}</p>
     <p>Prep Time: {{ recipe.prep_time }}</p>
-    <router-link :to="`/recipes/${recipe.id}/edit`">Edit</router-link>
+    <router-link :to="`/recipes/${recipe.id}/edit`"
+      ><button>Edit</button></router-link
+    >
+    <button v-on:click="destroyRecipe()">Destroy</button>
   </div>
 </template>
 
@@ -26,6 +29,17 @@ export default {
       console.log(this.recipe);
     });
   },
-  methods: {},
+  methods: {
+    destroyRecipe: function() {
+      // true when the user hits ok
+      // false when the user hits cancel
+      if (confirm("Are you sure you want to delete this recipe?")) {
+        axios.delete(`/api/recipes/${this.recipe.id}`).then((response) => {
+          console.log(response.data);
+          this.$router.push("/recipes");
+        });
+      }
+    },
+  },
 };
 </script>
