@@ -2,7 +2,9 @@
   <div class="recipes-index">
     <div v-for="recipe in recipes" v-bind:key="recipe.id">
       <h2>Title: {{ recipe.title }}</h2>
-      <img v-bind:src="recipe.image_url" alt="" />
+      <router-link :to="`/recipes/${recipe.id}`">
+        <img v-bind:src="recipe.image_url" alt="" />
+      </router-link>
       <p>Ingredients: {{ recipe.ingredients }}</p>
       <p>Directions: {{ recipe.directions }}</p>
       <p>Prep Time: {{ recipe.prep_time }}</p>
