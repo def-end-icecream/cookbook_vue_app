@@ -39,7 +39,10 @@
 export default {
   methods: {
     loggedIn: function() {
-      return localStorage.jwt;
+      return localStorage.jwt ? true : false;
+    },
+    getUserId: function() {
+      return localStorage.user_id;
     },
   },
 };

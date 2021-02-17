@@ -5,10 +5,16 @@
     <p>Ingredients: {{ recipe.ingredients }}</p>
     <p>Directions: {{ recipe.directions }}</p>
     <p>Prep Time: {{ recipe.prep_time }}</p>
-    <router-link :to="`/recipes/${recipe.id}/edit`"
-      ><button>Edit</button></router-link
-    >
-    <button v-on:click="destroyRecipe()">Destroy</button>
+
+    <div v-if="recipe.user_id == $parent.getUserId()">
+      <router-link :to="`/recipes/${recipe.id}/edit`"
+        ><button>Edit</button></router-link
+      >
+      <button v-on:click="destroyRecipe()">Destroy</button>
+    </div>
+
+    <p>User who made recipe: {{ recipe.user_id }}</p>
+    <p>User logged in: {{ $parent.getUserId() }}</p>
   </div>
 </template>
 
