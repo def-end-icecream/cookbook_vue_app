@@ -1,5 +1,6 @@
 <template>
   <div class="recipes-new">
+    <p v-if="!$parent.loggedIn()">You are not logged in!</p>
     <form v-on:submit.prevent="createRecipe()">
       <h1>New Recipe</h1>
       <img v-if="status" :src="`https://http.cat/${status}`" alt="" />
