@@ -82,6 +82,7 @@ export default {
         .post("/api/users", params)
         .then((response) => {
           console.log(response.data);
+          this.$parent.flashMessage = "You signed up, good job!";
           this.$router.push("/login");
         })
         .catch((error) => {

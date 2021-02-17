@@ -6,7 +6,7 @@
     <p>Directions: {{ recipe.directions }}</p>
     <p>Prep Time: {{ recipe.prep_time }}</p>
 
-    <div v-if="recipe.user_id == $parent.getUserId()">
+    <div v-if="recipe.owner">
       <router-link :to="`/recipes/${recipe.id}/edit`"
         ><button>Edit</button></router-link
       >

@@ -62,6 +62,7 @@ export default {
         .post("/api/recipes", params)
         .then((response) => {
           console.log(response.data);
+          this.$parent.flashMessage = "Recipe successfully created, good job!";
           this.$router.push("/recipes");
         })
         .catch((error) => {
