@@ -2,6 +2,7 @@
   <div class="recipes-new">
     <form v-on:submit.prevent="createRecipe()">
       <h1>New Recipe</h1>
+      <img v-if="status" :src="`https://http.cat/${status}`" alt="" />
       <ul>
         <li class="text-danger" v-for="error in errors" v-bind:key="error">
           {{ error }}
@@ -44,6 +45,7 @@ export default {
       prepTime: "",
       imageUrl: "",
       errors: [],
+      status: "",
     };
   },
   methods: {
@@ -62,6 +64,7 @@ export default {
           this.$router.push("/recipes");
         })
         .catch((error) => {
+          this.status = error.response.status;
           this.errors = error.response.data.errors;
         });
     },
