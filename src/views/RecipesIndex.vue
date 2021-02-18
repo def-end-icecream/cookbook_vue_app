@@ -1,7 +1,16 @@
 <template>
   <div class="recipes-index">
     <div>Seach: <input type="text" v-model="filter" /></div>
-    <div v-for="recipe in filterBy(recipes, filter)" v-bind:key="recipe.id">
+    <div>
+      <button v-on:click="sortAttribute = 'prep_time'">
+        Sort by prep time
+      </button>
+      <button v-on:click="sortAttribute = 'title'">Sort by title</button>
+    </div>
+    <div
+      v-for="recipe in orderBy(filterBy(recipes, filter), sortAttribute)"
+      v-bind:key="recipe.id"
+    >
       <h2>Title: {{ recipe.title }}</h2>
       <router-link :to="`/recipes/${recipe.id}`">
         <img v-bind:src="recipe.image_url" alt="" />
@@ -27,6 +36,7 @@ export default {
     return {
       recipes: [],
       filter: "",
+      sortAttribute: "title",
     };
   },
   created: function() {
