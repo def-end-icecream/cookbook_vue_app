@@ -1,6 +1,13 @@
 <template>
   <div class="recipes-index">
-    <div>Seach: <input type="text" v-model="filter" /></div>
+    <div>
+      Search: <input type="text" v-model="filter" list="titles" />
+      <datalist id="titles">
+        <option v-for="recipe in recipes" v-bind:key="recipe.title">{{
+          recipe.title
+        }}</option>
+      </datalist>
+    </div>
     <div>
       <button v-on:click="sortAttribute = 'prep_time'">
         Sort by prep time
