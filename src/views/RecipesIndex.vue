@@ -1,38 +1,71 @@
 <template>
   <div class="recipes-index">
-    <h1 class="animate__animated animate__bounce">All Recipes</h1>
-    <div>
-      Search: <input type="text" v-model="filter" list="titles" />
-      <datalist id="titles">
-        <option v-for="recipe in recipes" v-bind:key="recipe.title">{{
-          recipe.title
-        }}</option>
-      </datalist>
+    <datalist id="titles">
+      <option v-for="recipe in recipes" v-bind:key="recipe.title">{{
+        recipe.title
+      }}</option>
+    </datalist>
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-4">All Recipes</h1>
+        <p class="lead">
+          Search, sort, and browse!
+        </p>
+        <div class="row justify-content-md-center">
+          <div
+            class="btn-toolbar mb-3"
+            role="toolbar"
+            aria-label="Toolbar with button groups"
+          >
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button
+                v-on:click="sortAttribute = 'prep_time'"
+                class="btn btn-secondary"
+              >
+                Sort prep time
+              </button>
+              <button
+                v-on:click="sortAttribute = 'title'"
+                class="btn btn-secondary"
+              >
+                Sort title
+              </button>
+            </div>
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                v-model="filter"
+                aria-describedby="btnGroupAddon"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div>
-      <button v-on:click="sortAttribute = 'prep_time'">
-        Sort by prep time
-      </button>
-      <button v-on:click="sortAttribute = 'title'">Sort by title</button>
-    </div>
-    <div
-      is="transition-group"
-      appear
-      enter-active-class="animated rotateIn"
-      leave-active-class="animated rotateOut"
-    >
+
+    <div class="row row-cols-1 row-cols-md-3">
       <div
+        class="col mb-4"
         v-for="recipe in orderBy(filterBy(recipes, filter), sortAttribute)"
         v-bind:key="recipe.id"
       >
-        <h2>Title: {{ recipe.title }}</h2>
-        <router-link :to="`/recipes/${recipe.id}`">
-          <img v-bind:src="recipe.image_url" alt="" />
-        </router-link>
-        <p>Ingredients: {{ recipe.ingredients }}</p>
-        <p>Directions: {{ recipe.directions }}</p>
-        <p>Prep Time: {{ recipe.prep_time }}</p>
-        <p>Created {{ relativeDate(recipe.created_at) }}</p>
+        <div class="card h-100">
+          <img v-bind:src="recipe.image_url" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">{{ recipe.title }}</h5>
+            <p class="card-text">Ingredients: {{ recipe.ingredients }}</p>
+            <p class="card-text">
+              <small class="text-muted"
+                >Created {{ relativeDate(recipe.created_at) }}</small
+              >
+            </p>
+            <router-link class="btn btn-primary" :to="`/recipes/${recipe.id}`"
+              >See recipe</router-link
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
