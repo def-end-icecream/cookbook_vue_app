@@ -5,7 +5,7 @@
         recipe.title
       }}</option>
     </datalist>
-    <div class="jumbotron jumbotron-fluid">
+    <!-- <div class="jumbotron jumbotron-fluid">
       <div class="container">
         <h1 class="display-4">All Recipes</h1>
         <p class="lead">
@@ -43,35 +43,53 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="row row-cols-1 row-cols-md-3">
-      <div
-        class="col mb-4"
-        v-for="recipe in orderBy(filterBy(recipes, filter), sortAttribute)"
-        v-bind:key="recipe.id"
-      >
-        <div class="card h-100">
-          <img v-bind:src="recipe.image_url" class="card-img-top" alt="..." />
-          <div class="card-body">
-            <h5 class="card-title">{{ recipe.title }}</h5>
-            <p class="card-text">Ingredients: {{ recipe.ingredients }}</p>
-            <p class="card-text">
-              <small class="text-muted"
-                >Created {{ relativeDate(recipe.created_at) }}</small
-              >
+    <div id="fh5co-blog-section" class="fh5co-light-grey-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3 text-center fh5co-heading">
+            <h2>Browse Recipes</h2>
+            <p>
+              They are so delicious!
             </p>
-            <router-link class="btn btn-primary" :to="`/recipes/${recipe.id}`"
-              >See recipe</router-link
-            >
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-md-6 col-sm-6"
+            v-for="recipe in orderBy(filterBy(recipes, filter), sortAttribute)"
+            v-bind:key="recipe.id"
+          >
+            <router-link :to="`/recipes/${recipe.id}`" class="item-grid">
+              <div
+                class="image"
+                :style="`background-image: url(${recipe.image_url})`"
+              ></div>
+              <div class="v-align">
+                <div class="v-align-middle">
+                  <h3 class="title">{{ recipe.title }}</h3>
+                  <h5 class="date">
+                    <span>Created {{ relativeDate(recipe.created_at) }}</span>
+                  </h5>
+                  <!-- <p>Ingredients: {{ recipe.ingredients }}</p> -->
+                </div>
+              </div>
+            </router-link>
+          </div>
+
+          <div class="col-md-12 text-center animate-box">
+            <p>
+              <a href="#" class="btn btn-primary with-arrow"
+                >View More Post <i class="icon-arrow-right"></i
+              ></a>
+            </p>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style></style>
 
 <script>
 import axios from "axios";

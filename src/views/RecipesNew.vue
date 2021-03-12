@@ -27,7 +27,12 @@
       </div>
       <div class="form-group">
         <label>Image Url:</label>
-        <input type="text" class="form-control" v-model="imageUrl" />
+        <input
+          type="file"
+          class="form-control"
+          v-on:change="setFile($event)"
+          ref="fileInput"
+        />
       </div>
       <input type="submit" class="btn btn-primary" value="Create" />
     </form>
@@ -44,22 +49,26 @@ export default {
       ingredients: "",
       directions: "",
       prepTime: "",
-      imageUrl: "",
+      imageFile: "",
       errors: [],
       status: "",
     };
   },
   methods: {
+    setFile: function(event) {
+      if (event.target.files.length > 0) {
+        this.imageFile = event.target.files[0];
+      }
+    },
     createRecipe: function() {
-      var params = {
-        title: this.title,
-        ingredients: this.ingredients,
-        directions: this.directions,
-        prep_time: this.prepTime,
-        image_url: this.imageUrl,
-      };
+      var formData = new FormData();
+      formData.append("title", this.title);
+      formData.append("ingredients", this.ingredients);
+      formData.append("directions", this.directions);
+      formData.append("prep_time", this.prepTime);
+      formData.append("image_file", this.imageFile);
       axios
-        .post("/api/recipes", params)
+        .post("/api/recipes", formData)
         .then((response) => {
           console.log(response.data);
           this.$parent.flashMessage = "Recipe successfully created, good job!";
